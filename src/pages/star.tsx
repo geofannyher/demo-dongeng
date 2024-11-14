@@ -324,7 +324,7 @@ const Star = () => {
             {showVideo ? (
               <VideoRecorder
                 looping
-                videoSrc="https://res.cloudinary.com/dcd1jeldi/video/upload/v1731396204/dongeng-talk.mp4"
+                videoSrc="https://res.cloudinary.com/dcd1jeldi/video/upload/v1731581284/m3qr5uj61gfg5jqskgxw.mp4"
               />
             ) : (
               <VideoRecorder
