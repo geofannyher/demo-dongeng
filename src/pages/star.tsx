@@ -39,6 +39,7 @@ const Star = () => {
       recognitionInstance.lang = "id-ID";
 
       recognitionInstance.onresult = async (event: any) => {
+        console.log("hai");
         setIsTyping(true);
         const lastTranscript = event.results[0][0].transcript;
         addMessage(lastTranscript, "user", "User");
@@ -82,18 +83,18 @@ const Star = () => {
           const blob = new Blob([audioResponse.data], { type: "audio/mpeg" });
           const url = URL.createObjectURL(blob);
           setAudioUrl(url);
+          stopListening();
         } else {
-          console.error("Invalid audio data format:", audioResponse.data);
+          console.error("Format data audio tidak valid:", audioResponse.data);
         }
       };
-
-      recognitionInstance.onend = () => {
-        if (isListening) {
-          recognitionInstance.start();
-        }
+      // Triggered when speech ends but no result is received
+      recognitionInstance.onspeechend = () => {
+        console.log(
+          "Pengguna berhenti berbicara tanpa hasil, melanjutkan mendengarkan."
+        );
+        recognition.start();
       };
-
-      setRecognition(recognitionInstance);
     } else {
       alert("Browser tidak mendukung Web Speech API");
     }
@@ -102,7 +103,6 @@ const Star = () => {
   const startListening = () => {
     if (recognition) {
       setIsListening(true);
-      console.log("start");
       recognition.start();
     } else {
       console.error("Recognition instance is null, cannot start listening");
@@ -112,7 +112,6 @@ const Star = () => {
   const stopListening = () => {
     if (recognition) {
       setIsListening(false);
-      console.log("stop");
       recognition.stop();
     } else {
       console.error("Recognition instance is null, cannot stop listening");
@@ -125,10 +124,8 @@ const Star = () => {
         .play()
         .catch((error) => console.error("Audio playback error:", error));
       audioRef.current.onended = () => {
-        if (isListening) {
-          setShowVideo(false);
-          recognition.start();
-        }
+        setShowVideo(false);
+        startListening();
       };
     }
   }, [audioUrl]);
