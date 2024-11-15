@@ -42,7 +42,6 @@ const Star = () => {
         setIsTyping(true);
         const lastTranscript = event.results[0][0].transcript;
         addMessage(lastTranscript, "user", "User");
-        stopListening();
         const chatResponse = await chatbot(
           idUser.current,
           lastTranscript,
@@ -126,8 +125,10 @@ const Star = () => {
         .play()
         .catch((error) => console.error("Audio playback error:", error));
       audioRef.current.onended = () => {
-        setShowVideo(false);
-        recognition.start();
+        if (isListening) {
+          setShowVideo(false);
+          recognition.start();
+        }
       };
     }
   }, [audioUrl]);
