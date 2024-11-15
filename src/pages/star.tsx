@@ -93,8 +93,10 @@ const Star = () => {
         console.log(
           "Pengguna berhenti berbicara tanpa hasil, melanjutkan mendengarkan."
         );
-        recognition.start();
+        startListening();
       };
+
+      setRecognition(recognitionInstance);
     } else {
       alert("Browser tidak mendukung Web Speech API");
     }
