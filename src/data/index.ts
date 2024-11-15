@@ -39,3 +39,15 @@ export const cardData = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoP_6MVxXxkju1TiOMpMPJaHMaVDQ5tyPOEQ&s",
   },
 ];
+
+const model = "gpt-4o";
+const starName = "naya_dongeng";
+const keyword = "##creepy##";
+const videoTalk =
+  // "https://res.cloudinary.com/dcd1jeldi/video/upload/v1731581284/m3qr5uj61gfg5jqskgxw.mp4";
+  "https://res.cloudinary.com/dcd1jeldi/video/upload/v1731650255/daxeyujlktezqvnyf6kl.mp4";
+const videoIdle =
+  // "https://res.cloudinary.com/dcd1jeldi/video/upload/v1731389998/dongeng-idle.mp4";
+  "https://res.cloudinary.com/dcd1jeldi/video/upload/v1731650078/hxx5fozmmmbqntbdivpq.mp4";
+
+export { model, starName, keyword, videoIdle, videoTalk };
