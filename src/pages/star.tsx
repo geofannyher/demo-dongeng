@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { model, starName, keyword, videoIdle, videoTalk } from "../data";
 import { MicIcon, GraphicEqIcon } from "../data/icons";
-import { textToSpeech } from "../services/elevenlabs";
+// import { textToSpeech } from "../services/elevenlabs";
 import AlertSnackbar from "../components/AlertSnackbar/Alertsnackbar";
 import VideoRecorder from "../components/VideoRecorder/VideoRecorder";
 import { chatbot, resetChatbot } from "../services/ApiService";
