@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { model, starName, keyword, videoIdle, videoTalk } from "../data";
 import { MicIcon, GraphicEqIcon } from "../data/icons";
-// import { textToSpeech } from "../services/elevenlabs";
+import { textToSpeech } from "../services/elevenlabs";
 import AlertSnackbar from "../components/AlertSnackbar/Alertsnackbar";
 import VideoRecorder from "../components/VideoRecorder/VideoRecorder";
 import { chatbot, resetChatbot } from "../services/ApiService";
@@ -11,7 +11,7 @@ import RightContent from "../components/ContentPart/RightContent";
 import BottomContent from "../components/ContentPart/BottomContent";
 import Header from "../components/Header/Header";
 import Button from "../components/Button/Button";
-import { Client } from "@gradio/client";
+// import { Client } from "@gradio/client";
 const Star = () => {
   const [startStory, setStartStory] = useState(false);
   const [newestMessageId, setNewestMessageId] = useState<null | number>(null);
@@ -66,21 +66,21 @@ const Star = () => {
           console.log("no data env");
           return;
         }
-        const client = await Client.connect("https://talk.hadiwijaya.co/", {
-          auth: ["demo", import.meta.env.VITE_PASSWORD],
-        });
-        const { data } = await client.predict("/tts", {
-          text: resultChat,
-          model_name: "aluna",
-        });
-
-        // const audioResponse: any = await textToSpeech({
-        //   uid: "cmOAElxzaS4tbxmzTzCD",
-        //   similarity_boost: 1,
-        //   stability: 0.38,
-        //   model_id: "eleven_multilingual_v2",
-        //   text: resultChat,
+        // const client = await Client.connect("https://talk.hadiwijaya.co/", {
+        //   auth: ["demo", import.meta.env.VITE_PASSWORD],
         // });
+        // const { data } = await client.predict("/tts", {
+        //   text: resultChat,
+        //   model_name: "aluna",
+        // });
+
+        const audioResponse: any = await textToSpeech({
+          uid: "cmOAElxzaS4tbxmzTzCD",
+          similarity_boost: 1,
+          stability: 0.38,
+          model_id: "eleven_multilingual_v2",
+          text: resultChat,
+        });
 
         if (!chatResponse) {
           console.log("gaada audio");
@@ -91,21 +91,21 @@ const Star = () => {
 
         addMessage(resultChat, "star", starName);
 
-        if (data instanceof Array) {
-          const url: any = data.map((item) => item.url);
-          setAudioUrl(url);
-        } else {
-          console.error("Invalid audio data format:", data);
-        }
-
-        // if (audioResponse) {
-        //   const blob = new Blob([audioResponse.data], { type: "audio/mpeg" });
-        //   const url = URL.createObjectURL(blob);
+        // if (data instanceof Array) {
+        //   const url: any = data.map((item) => item.url);
         //   setAudioUrl(url);
-        //   stopListening();
         // } else {
-        //   console.error("Format data audio tidak valid:", audioResponse.data);
+        //   console.error("Invalid audio data format:", data);
         // }
+
+        if (audioResponse) {
+          const blob = new Blob([audioResponse.data], { type: "audio/mpeg" });
+          const url = URL.createObjectURL(blob);
+          setAudioUrl(url);
+          stopListening();
+        } else {
+          console.error("Format data audio tidak valid:", audioResponse.data);
+        }
       };
       // Triggered when speech ends but no result is received
       recognitionInstance.onspeechend = () => {
