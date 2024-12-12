@@ -11,6 +11,7 @@ import RightContent from "../components/ContentPart/RightContent";
 import BottomContent from "../components/ContentPart/BottomContent";
 import Header from "../components/Header/Header";
 import Button from "../components/Button/Button";
+import axios from "axios";
 // import { Client } from "@gradio/client";
 const Star = () => {
   const [startStory, setStartStory] = useState(false);
@@ -43,29 +44,30 @@ const Star = () => {
         setIsTyping(true);
         const lastTranscript = event.results[0][0].transcript;
         addMessage(lastTranscript, "user", "User");
-        const chatResponse = await chatbot(
-          idUser.current,
-          lastTranscript,
-          starName,
-          model
-        );
 
+        const chatResponse = await axios.post(
+          `${import.meta.env.VITE_PUBLIC_AVATARA_URl}/api/all`,
+          {
+            message: lastTranscript,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(chatResponse);
         if (!chatResponse) {
           console.log("gaada hasil");
           return;
         }
-        const cleanResult = chatResponse.data
-          ? chatResponse.data.replace(/```json\n\[\]\n```/g, "")
-          : chatResponse.data;
+        const cleanResult = chatResponse.data.data.content
+          ? chatResponse.data.data.content.replace(/```json\n\[\]\n```/g, "")
+          : chatResponse.data.data.content;
 
         const resultChat = cleanResult.includes(keyword)
           ? cleanResult.replace(keyword, "")
           : cleanResult;
-
-        if (!import.meta.env.VITE_PASSWORD) {
-          console.log("no data env");
-          return;
-        }
         // const client = await Client.connect("https://talk.hadiwijaya.co/", {
         //   auth: ["demo", import.meta.env.VITE_PASSWORD],
         // });
